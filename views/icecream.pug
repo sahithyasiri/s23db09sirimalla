@@ -2,10 +2,10 @@ extends layout
 
 block content
   h1= title
-  - var icecream=[{icecream_flavour:"vanilla",icecream_scoops:"2",icecream_cost:400},{icecream_flavour:"chocolate",icecream_scoops:"4",icecream_cost:2000},{icecream_flavour:"strawberry",icecream_scoops:"3",icecream_cost:3000}]
+  - var ice= results
   div(class="container-fluid")
   div(class="row")
-   each i,index  in icecream
+   each i,index  in ice
     div(class="col-sm-2" onclick =`buy(${index})`) #{i.icecream_flavour}, #{i.icecream_scoops}, #{i.icecream_cost}
     script.
         function buy(a)
