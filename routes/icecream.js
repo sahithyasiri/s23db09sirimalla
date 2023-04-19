@@ -17,3 +17,5 @@ const icecream_controlers= require('../controllers/icecream');
 router.get('/', icecream_controlers.icecream_view_all_Page );
 
 module.exports = router;
+/* GET detail costume page */
+router.get('/detail', icecream_controlers.icecream_view_one_Page);

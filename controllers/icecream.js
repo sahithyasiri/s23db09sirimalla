@@ -20,9 +20,19 @@ exports.icecream_create_post = function (req, res) {
     res.send('NOT IMPLEMENTED: Costume create POST');
 };
 // Handle Costume delete form on DELETE.
-exports.icecream_delete = function (req, res) {
-    res.send('NOT IMPLEMENTED: Costume delete DELETE ' + req.params.id);
+// Handle Costume delete on DELETE.
+exports.icecream_delete = async function (req, res) {
+    console.log("delete " + req.params.id)
+    try {
+        result = await icecream.findByIdAndDelete(req.params.id)
+        console.log("Removed " + result)
+        res.send(result)
+    } catch (err) {
+        res.status(500)
+        res.send(`{"error": Error deleting ${err}}`);
+    }
 };
+
 // Handle Costume update form on PUT.
 // exports.icecream_update_put = function (req, res) {
 //     res.send('NOT IMPLEMENTED: Costume update PUT' + req.params.id);
@@ -90,5 +100,18 @@ exports.icecream_create_post = async function (req, res) {
     catch (err) {
         res.status(500);
         res.send(`{"error": ${err}}`);
+    }
+};
+// Handle a show one view with id specified by query
+exports.icecream_view_one_Page = async function (req, res) {
+    console.log("single view for id " + req.query.id)
+    try {
+        result = await icecream.findById(req.query.id)
+        res.render('icecreamdetail',
+            { title: 'icecream Detail', toShow: result });
+    }
+    catch (err) {
+        res.status(500)
+        res.send(`{'error': '${err}'}`);
     }
 };
