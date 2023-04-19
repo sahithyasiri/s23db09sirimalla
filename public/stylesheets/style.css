@@ -11,3 +11,18 @@ a {
   background-color: aquamarine;
   width: 120px;
 }
+
+.icecreamAttr {
+  background-color: rgb(170, 130, 238);
+  width: 120px;
+  }
+
+  #icecreamForm {
+    background-color:rgba(14, 237, 137, 0.827);
+    width: 325px;
+  }
+  
+  h1{
+    color: rgb(218, 29, 171);
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+  }
