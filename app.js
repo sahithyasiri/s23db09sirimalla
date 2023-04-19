@@ -5,15 +5,15 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 
 require('dotenv').config();
-const connectionString =
-  process.env.MONGO_CON
+
+const connectionString = process.env.MONGO_CON
 mongoose = require('mongoose');
 mongoose.connect(connectionString,
   {
     useNewUrlParser: true,
     useUnifiedTopology: true
   });
-
+  
 
 
 var indexRouter = require('./routes/index');
@@ -26,6 +26,7 @@ var resourceRouter = require("./routes/resource");
 
 //Get the default connection
 var db = mongoose.connection;
+
 //Bind connection to error event
 db.on('error', console.error.bind(console, 'MongoDB connectionerror:'));
 db.once("open", function () {
@@ -36,11 +37,14 @@ var app = express();
 // We can seed the collection if needed onserver start
 async function recreateDB() {
   // Delete everything
+  
   await icecream.deleteMany();
+  console.log('connecting...')
   let instance1 = new icecream({ icecream_flavour: "vanilla", icecream_scoops: '2', icecream_cost: 400 });
   let instance2 = new icecream({ icecream_flavour: "chocolate", icecream_scoops: '4', icecream_cost: 2000 });
   let instance3 = new icecream({ icecream_flavour: "strawberry", icecream_scoops: '3', icecream_cost: 3000 });
-  instance1.save().then(doc => {
+  instance1.save().then(() => {
+    
     console.log("First object saved")
   }
   ).catch(err => {
