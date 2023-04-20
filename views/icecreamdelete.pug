@@ -1,4 +1,5 @@
 extends layout
+
 block content
   h1= title
   if (toShow == null)
@@ -9,7 +10,7 @@ block content
     - let icecream_scoops = toShow.icecream_scoops
     - let icecream_cost = toShow.icecream_cost
     - let actionid = "/resource/icecream/" + icecreamid
-    script
+    script.
       let actionid = "#{actionid}"
     div
       div.row
@@ -22,7 +23,7 @@ block content
         div(class='icecreamAttr mr-3') icecream scoops is:
         div #{icecream_scoops}
       div.row
-        div(class='icecreamAttr mr-3') icecream Cost is:
+        div(class='icecreamAttr mr-3') icecream cost is:
         div #{icecream_cost}
       button(class="btn btn-danger m-2" onclick="deleteOnid()") Delete
       button(class="btn btn-secondary m-2" onclick="cancel()") Cancel
