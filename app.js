@@ -3,6 +3,25 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
+var passport = require('passport');
+var LocalStrategy = require('passport-local').Strategy;
+passport.use(new LocalStrategy(
+  function (username, password, done) {
+    Account.findOne({ username: username }, function (err, user) {
+      if (err) { return done(err); }
+      if (!user) {
+        return done(null, false, { message: 'Incorrect username.' });
+      }
+      if (!user.validPassword(password)) {
+        return done(null, false, { message: 'Incorrect password.' });
+      }
+      return done(null, user);
+    });
+  }
+));
+
+
+
 
 require('dotenv').config();
 
@@ -13,7 +32,7 @@ mongoose.connect(connectionString,
     useNewUrlParser: true,
     useUnifiedTopology: true
   });
-  
+
 
 
 var indexRouter = require('./routes/index');
@@ -37,14 +56,14 @@ var app = express();
 // We can seed the collection if needed onserver start
 async function recreateDB() {
   // Delete everything
-  
+
   await icecream.deleteMany();
   console.log('connecting...')
   let instance1 = new icecream({ icecream_flavour: "vanilla", icecream_scoops: '2', icecream_cost: 400 });
   let instance2 = new icecream({ icecream_flavour: "chocolate", icecream_scoops: '4', icecream_cost: 2000 });
   let instance3 = new icecream({ icecream_flavour: "strawberry", icecream_scoops: '3', icecream_cost: 3000 });
   instance1.save().then(() => {
-    
+
     console.log("First object saved")
   }
   ).catch(err => {
@@ -74,6 +93,13 @@ app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
+app.use(require('express-session')({
+  secret: 'keyboard cat',
+  resave: false,
+  saveUninitialized: false
+  }));
+  app.use(passport.initialize());
+  app.use(passport.session());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
@@ -82,6 +108,11 @@ app.use('/icecream', icecreamRouter);
 app.use('/board', boardRouter);
 app.use('/selector', selectorRouter);
 app.use('/resource', resourceRouter);
+
+var Account =require('./models/account');
+passport.use(new LocalStrategy(Account.authenticate()));
+passport.serializeUser(Account.serializeUser());
+passport.deserializeUser(Account.deserializeUser());
 
 
 // catch 404 and forward to error handler
