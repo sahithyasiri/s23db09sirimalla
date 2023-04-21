@@ -3,12 +3,21 @@ extends layout
 block content
   h1= title
   - var ice= results
-  div(class="container-fluid")
-  div(class="row")
-   each i,index  in ice
-    div(class="col-sm-2" onclick =`buy(${index})`) #{i.icecream_flavour}, #{i.icecream_scoops}, #{i.icecream_cost}
+  div.container-fluid
+    div.row.m-1
+      each item, index in ice
+        - let destination = `dispatch("/icecream/update?id=${item._id}")`
+        div.col-sm-2(onclick=`buy(${index})`)
+          | #{item.icecream_flavour}, #{item.icecream_scoops}, #{item.icecream_cost}
+          button.btn.btn-primary.ml-1(onclick=destination) Update
     script.
-        function buy(a)
-        {
-            alert(`You purchased Item ${a+1}`)
-        }
+      function buy(a) {
+        alert(`You purchased Item ${a+1}`);
+      }
+    script.
+      function dispatch(path) {
+        window.location.href = path;
+      }
+
+
+
