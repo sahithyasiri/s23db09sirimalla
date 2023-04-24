@@ -1,23 +1,73 @@
+//- extends layout
+
+//- block content
+//-   h1= title
+//-   - var ice= results
+//-   div.container-fluid
+//-     div.row.m-1
+//-       each item, index in ice
+//-         - let destination = `dispatch("/icecream/update?id=${item._id}")`
+//-         div.col-sm-2(onclick=`buy(${index})`)
+//-           | #{item.icecream_flavour}, #{item.icecream_scoops}, #{item.icecream_cost}
+//-           button.btn.btn-primary.ml-1(onclick=destination) Update
+//-     script.
+//-       function buy(a) {
+//-         alert(`You purchased Item ${a+1}`);
+//-       }
+//-     script.
+//-       function dispatch(path) {
+//-         window.location.href = path
+//-       }
+
+
 extends layout
 
 block content
   h1= title
-  - var ice= results
-  div.container-fluid
-    div.row.m-1
-      each item, index in ice
-        - let destination = `dispatch("/icecream/update?id=${item._id}")`
-        div.col-sm-2(onclick=`buy(${index})`)
-          | #{item.icecream_flavour}, #{item.icecream_scoops}, #{item.icecream_cost}
-          button.btn.btn-primary.ml-1(onclick=destination) Update
-    script.
-      function buy(a) {
-        alert(`You purchased Item ${a+1}`);
-      }
-    script.
-      function dispatch(path) {
-        window.location.href = path
-      }
 
+  - let result = results;
 
+  a(class="btn btn-success" href="/icecream/create") Create
+
+  div(class="container-fluid mt-3")
+
+    div(class="row m-1")
+
+      each result,index in results
+
+        - let destination = `dispatch(\"/icecream/update?id=${result._id}\")`
+
+        div(class="col-sm-2" onclick=`buy(${index})`) #{result.icecream_flavour} - #{result.icecream_scoops} - #{result.car_pricecream_cost}
+
+          button.btn(class="btn-primary ml-1", onclick=destination) Update
+
+          a(class="btn btn-danger", href=`/icecream/delete?id=${result._id}`) Delete
+
+          a(class="btn btn-dark", href=`/icecream/detail?id=${result._id}`) Details
+
+  br
+
+  div(class="container-fluid")
+
+    div(class="row")
+
+      - for (var i = 0; i < results.length; i++) {
+
+        div(class="col-sm-2" width="215px" onClick=`buy(${i+1})`) #{results[i].icecream_flavour}
+
+      - }
+
+  script.
+
+    function buy(indexNum) {
+
+      alert(`You purchased item ${indexNum}`);
+
+    }
+
+    function dispatch(path) {
+
+      window.location.href = path;
+
+    }
 
